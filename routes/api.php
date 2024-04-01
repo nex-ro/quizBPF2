@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::apiResource('/posts', App\Http\Controllers\Api\PostController::class)->middleware('hak-akses');
-Route::middleware('auth:sanctum')->get('/user',function (Request $request) {
-Route::apiResource('/posts',App\Http\Controllers\Api\PostController::class);
-});
+Route::apiResource('/posts', App\Http\Controllers\Api\PostController::class);
+Route::apiResource('/posts/:id', App\Http\Controllers\Api\PostController::class);
+
+
 Route::post('login', [App\Http\Controllers\Api\AuthController::class,'signin']);
 Route::post('register', [App\Http\Controllers\Api\AuthController::class,'signup']);
 
