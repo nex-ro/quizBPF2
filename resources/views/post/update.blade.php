@@ -12,20 +12,29 @@
                 <form id="formData_edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="post_id">
                     <div class="form-group">
-                        <label for="name" class="control-label">Title</label>
-                        <input type="text" class="form-control" id="title-edit">
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-title-edit"></div>
+                        <label for="name" class="control-label">nama_mahasiswa_nim                        </label>
+                        <input type="text" class="form-control" id="nama_mahasiswa_nim-edit">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama_mahasiswa_nim-edit"></div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="control-label">Image</label>
-                        <input type="file" class="form-control" id="image-edit">
-                        <img id="gambar" width="50" height="50">
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-image-edit"></div>
+                        <label for="name" class="control-label">tempat_lahir                        </label>
+                        <input type="text" class="form-control" id="tempat_lahir-edit">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tempat_lahir-edit"></div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Content</label>
-                        <textarea class="form-control" rows="4" id="content-edit"></textarea>
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-content-edit"></div>
+                        <label class="control-label">tanggal_lahir</label>
+                        <input type="date" class="form-control" id="tanggal_lahir-edit"></input>
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_lahir-edit"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">noHp</label>
+                        <input type="text" class="form-control" id="noHp-edit"></input>
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-noHp-edit"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">email</label>
+                        <input class="form-control"  id="email-edit"></textarea>
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-email-edit"></div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -49,11 +58,11 @@
             success: function (response) {
                 // Fill data into the form
                 $('#post_id').val(response.data.id);
-                $('#title-edit').val(response.data.title);
-                $('#content-edit').val(response.data.content);
-
-                // Display image in the modal
-                $('#gambar').attr("src", "{{ url('storage/posts') }}/" + response.data.image);
+                $('#nama_mahasiswa_nim-edit').val(response.data.nama_mahasiswa_nim);
+                $('#tempat_lahir-edit').val(response.data.tempat_lahir);
+                $('#tanggal_lahir-edit').val(response.data.tanggal_lahir);
+                $('#noHp-edit').val(response.data.noHp);
+                $('#email-edit').val(response.data.email);
 
                 // Open modal
                 $('#modal-edit').modal('show');
@@ -63,21 +72,18 @@
 
     // Action to update post
     $('body').on('submit', '#formData_edit', function (e) {
-        e.preventDefault();x
+        e.preventDefault();
         e.stopPropagation();
         let post_id = $('#post_id').val();
         var form = new FormData();
-        form.append("title", $('#title-edit').val());
-        form.append("content", $('#content-edit').val());
-
-        // Check if a new image is selected
-        var imageFile = $('input[id="image-edit"]')[0].files[0];
-        if (imageFile) {
-            form.append("image", imageFile);
-        }
-
+        form.append("nama_mahasiswa_nim", $('#nama_mahasiswa_nim-edit').val());
+        form.append("tempat_lahir", $('#tempat_lahir-edit').val());
+        form.append("tanggal_lahir", $('#tanggal_lahir-edit').val());
+        form.append("noHp", $('#noHp-edit').val());
+        form.append("email",$('#email-edit').val());
         form.append("_method", "PUT");
 
+        console.log(form.get("nama_mahasiswa_nim"))
         // AJAX request to update post
         $.ajax({
             url: '{{url('api/posts')}}/' + post_id,
@@ -98,15 +104,15 @@
                     showConfirmButton: false,
                     timer: 3000
                 });
-
+                console.log(response)
                 // Update post data in the table
                 let post = `
                 <tr id="index_${response.data.id}">
-                    <td>${response.data.title}</td>
-                    <td>${response.data.content}</td>
-                    <td>
-                        <img src="{{ url('storage/posts') }}/${response.data.image}" width="50" height="50">
-                    </td>
+                    <td>${response.data.nama_mahasiswa_nim}</td>
+                    <td>${response.data.tempat_lahir}</td>
+                    <td>${response.data.tanggal_lahir}</td>
+                    <td>${response.data.noHp}</td>
+                    <td>${response.data.email}</td>
                     <td class="text-center">
                         <a href="javascript:void(0)" id="btn-edit-post" data-id="${response.data.id}" class="btn btn-primary btn-sm">EDIT</a>
                         <a href="javascript:void(0)" id="btn-delete-post" data-id="${response.data.id}" class="btn btn-danger btn-sm">DELETE</a>
@@ -119,21 +125,22 @@
                 $('#modal-edit').modal('hide');
             },
             error: function (error) {
-                console.log(error);
+    console.log(error);
 
-                // Display error messages
-                if (error.responseJSON.title) {
-                    $('#alert-title-edit').removeClass('d-none');
-                    $('#alert-title-edit').addClass('d-block');
-                    $('#alert-title-edit').html(error.responseJSON.title[0]);
-                }
-                if (error.responseJSON.content) {
-                    $('#alert-content-edit').removeClass('d-none');
-                    $('#alert-content-edit').addClass('d-block');
-                    $('#alert-content-edit').html(error.responseJSON.content[0]);
-                }
-            }
+    // Clear any previous error messages
+    $('.alert').removeClass('d-block').addClass('d-none').html('');
+
+    // Display error messages for each field
+    if (error.responseJSON.errors) {
+        Object.keys(error.responseJSON.errors).forEach(function(key) {
+            let alert_id = "#alert-" + key + "-edit";
+            $(alert_id).removeClass('d-none');
+            $(alert_id).addClass('d-block');
+            $(alert_id).html(error.responseJSON.errors[key][0]);
+        });
+    }
+}
+
         });
     });
 </script>
-    

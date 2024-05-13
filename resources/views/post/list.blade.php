@@ -33,18 +33,22 @@ shrink-to-fit=no">
 						<table class="table table-bordered table-striped">
 							<thead>
 								<tr>
-									<th>Title</th>
-									<th>Content</th>
-									<th>Gambar</th>
-									<th>Aksi</th>
+									<th>nama</th>
+									<th>tempat_lahir</th>
+									<th>tanggal_lahir</th>
+									<th>noHp</th>
+                                    <th>email</th>
 								</tr>
 							</thead>
 							<tbody id="table-posts">
 								@foreach($posts as $post)
 								<tr id="index_{{ $post->id }}">
-									<td>{{ $post->title }}</td>
-									<td>{{ $post->content }}</td>
-									<td><img src="{{ url('storage/posts/'.$post->image) }}" width="50" height="50"></td>
+									<td>{{ $post->nama_mahasiswa_nim }}</td>
+									<td>{{ $post->tempat_lahir }}</td>
+									<td>{{ $post->tanggal_lahir }}</td>
+                                    <td>{{ $post->noHp }}</td>
+                                    <td>{{ $post->email }}</td>
+
 									<td class="text-center">
 										<a href="javascript:void(0)" id="btn-edit-post" data-id="{{ $post->id }}"
 											class="btn btn-primary btn-sm">EDIT</a>

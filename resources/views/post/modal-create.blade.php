@@ -6,7 +6,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">TAMBAH POST</h5>
-
                 <button type="button" class="close" data-dismiss="modal" aria- label="Close">
 
                     <span aria-hidden="true">&times;</span>
@@ -14,28 +13,49 @@
             </div>
             <div class="modal-body">
                 <form method="post"id="formData" enctype="multipart/form-data">
-
-                    
-
                     <div class="form-group">
-                        <label for="name" class="control-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title">
-
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-title"></div>
+                        <label for="name" class="control-label">Nama</label>
+                        <input type="text" class="form-control" id="nama_mahasiswa_nim" name="nama_mahasiswa_nim
+">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama_mahasiswa_nim"></div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="control-label">Image</label>
-                        <input type="file" class="form-control" id="image" name="image">
-
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-title"></div>
+                        <label for="name" class="control-label">tempat_lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir
+">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tempat_lahir"></div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Content</label>
-                        <textarea class="form-control" id="content" rows="4" name="content"></textarea>
+                        <label for="name" class="control-label">tanggal_lahir
+                        </label>
+                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir
 
-                        
-                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-content"></div>
+">
+
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_lahir"></div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="name" class="control-label">noHp
+                        </label>
+                        <input type="text" class="form-control" id="noHp" name="noHp
+
+">
+
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-noHp"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name" class="control-label">email
+                        </label>
+                        <input type="text" class="form-control" id="email" name="email
+
+">
+
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-email"></div>
+                    </div>
+
+
             </div>
             <div class="modal-footer">
 
@@ -61,9 +81,12 @@
         e.preventDefault();
         e.stopPropagation();
         var data = new FormData(document.getElementById("formData"));
-        data.append('image', $('input[id="image"]')[0].files[0]);
-        data.append("title", $('#title').val());
-        data.append("content",$('#content').val());
+
+        data.append("nama_mahasiswa_nim", $('#nama_mahasiswa_nim').val());
+        data.append("tempat_lahir", $('#tempat_lahir').val());
+        data.append("tanggal_lahir", $('#tanggal_lahir').val());
+        data.append("noHp", $('#noHp').val());
+        data.append("email",$('#email').val());
         // Ajax
         $.ajax({
             url: '{{url('api/posts')}}',
@@ -90,11 +113,11 @@
                 // Data post
                 let post = `
                 <tr id="index_${response.data.id}">
-                    <td>${response.data.title}</td>
-                    <td>${response.data.content}</td>
-                    <td>
-                        <img src="{{ url('storage/posts') }}${"/"+response.data.image}">
-                    </td>
+                    <td>${response.data.nama_mahasiswa_nim}</td>
+                    <td>${response.data.tempat_lahir}</td>
+                    <td>${response.data.tanggal_lahir}</td>
+                    <td>${response.data.noHp}</td>
+                    <td>${response.data.email}</td>
                     <td class="text-center">
                         <a href="javascript:void(0)" id="btn-edit-post" data-id="${response.data.id}" class="btn btn-primary btn-sm">EDIT</a>
                         <a href="javascript:void(0)" id="btn-delete-post" data-id="${response.data.id}" class="btn btn-danger btn-sm">DELETE</a>
@@ -104,26 +127,48 @@
                 // Append to table
                 $('#table-posts').prepend(post);
                 // Clear form
-                $('#title').val('');
-                $('#content').val('');
-                $('#image').val('');
+                $('#nama_mahasiswa_nim').val('');
+                $('#tempat_lahir').val('');
+                $('#tanggal_lahir').val('');
+                $('#noHp').val('');
+                $('#email').val('');
+
                 // Close modal
                 $('#modal-create').modal('hide');
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.responseText);
+                // console.log(jqXHR.responseText);
                 var errors = jqXHR.responseJSON;
-                if(errors.title) {
+                // console.log(errors)
+                if(errors.nama_mahasiswa_nim) {
                     // Show alert for title error
-                    $('#alert-title').removeClass('d-none');
-                    $('#alert-title').addClass('d-block');
-                    $('#alert-title').html(errors.title[0]);
+                    $('#alert-nama_mahasiswa_nim').removeClass('d-none');
+                    $('#alert-nama_mahasiswa_nim').addClass('d-block');
+                    $('#alert-nama_mahasiswa_nim').html(errors.nama_mahasiswa_nim[0]);
                 }
-                if(errors.content) {
+                if(errors.tempat_lahir) {
                     // Show alert for content error
-                    $('#alert-content').removeClass('d-none');
-                    $('#alert-content').addClass('d-block');
-                    $('#alert-content').html(errors.content[0]);
+                    $('#alert-tempat_lahir').removeClass('d-none');
+                    $('#alert-tempat_lahir').addClass('d-block');
+                    $('#alert-tempat_lahir').html(errors.tempat_lahir[0]);
+                }
+                if(errors.tanggal_lahir) {
+                    // Show alert for content error
+                    $('#alert-tanggal_lahir').removeClass('d-none');
+                    $('#alert-tanggal_lahir').addClass('d-block');
+                    $('#alert-tanggal_lahir').html(errors.tanggal_lahir[0]);
+                }
+                if(errors.noHp) {
+                    // Show alert for content error
+                    $('#alert-noHp').removeClass('d-none');
+                    $('#alert-noHp').addClass('d-block');
+                    $('#alert-noHp').html(errors.noHp[0]);
+                }
+                if(errors.email) {
+                    // Show alert for content error
+                    $('#alert-email').removeClass('d-none');
+                    $('#alert-email').addClass('d-block');
+                    $('#alert-email').html(errors.email[0]);
                 }
             }
         });

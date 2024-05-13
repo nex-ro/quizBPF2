@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
+use App\Models\mahasiswa_nim;
 
 class PostController extends Controller
 {
     public function index (){
-        $posts = Post::latest()->paginate(5);
+        $posts = mahasiswa_nim::latest()->paginate(5);
         return view('post.list', compact('posts'));
     }
 

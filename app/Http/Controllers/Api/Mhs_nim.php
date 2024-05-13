@@ -8,10 +8,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // use App\Models\Post;
 use App\Models\mahasiswa_nim;
-use App\Http\Resources\PostResource;
 
+use App\Http\Resources\MahasiswaSource;
 
-class PostController extends Controller
+class Mhs_nim extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,15 +20,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = mahasiswa_nim::latest()->paginate(5);
-        return new PostResource(true, 'List Data Posts', $posts);
+        $mahasiswa_nim = mahasiswa_nim::latest()->paginate(5);
+        return new MahasiswaSource(true, 'List Data Posts', $mahasiswa_nim);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -54,8 +49,7 @@ class PostController extends Controller
             return response()->json($validator->errors(),422);
         }
 
-
-        $post = mahasiswa_nim::create([
+        $mahasiswa_nim = mahasiswa_nim::create([
             'nama_mahasiswa_nim'     => $request->nama_mahasiswa_nim,
             'tempat_lahir'     =>  $request->tempat_lahir,
             'tanggal_lahir'   => $request->tanggal_lahir,
@@ -63,7 +57,7 @@ class PostController extends Controller
             'email'     => $request->email,
         ]);
 
-        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+        return new MahasiswaSource(true, 'Data Post Berhasil Ditambahkan!', $mahasiswa_nim);
     }
 
     /**
@@ -72,9 +66,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(mahasiswa_nim $post)
+    public function show(mahasiswa_nim $mahasiswa_nims)
     {
-        return new PostResource(true, 'Data Post Ditemukan!', $post);
+        return new MahasiswaSource(true, 'Data Post Ditemukan!', $mahasiswa_nims);
     }
 
     /**
@@ -95,7 +89,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, mahasiswa_nim $post)
+    public function update(Request $request, mahasiswa_nim $mahasiswa_nim)
     {
         $validator = Validator::make($request->all(),[
             'nama_mahasiswa_nim'     => 'required',
@@ -108,9 +102,7 @@ class PostController extends Controller
         if ($validator->fails()){
             return response()->json($validator->errors(),422);
         }
-
-
-            $post->update([
+            $mahasiswa_nim->update([
                 'nama_mahasiswa_nim'     => $request->nama_mahasiswa_nim,
                 'tempat_lahir'     =>  $request->tempat_lahir,
                 'tanggal_lahir'   => $request->tanggal_lahir,
@@ -118,7 +110,7 @@ class PostController extends Controller
                 'email'     => $request->email,
             ]);
 
-        return new PostResource(true, 'Data Post Berhasil Diubah', $post);
+        return new MahasiswaSource(true, 'Data Post Berhasil Diubah', $mahasiswa_nim);
     }
 
     /**
@@ -127,9 +119,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(mahasiswa_nim $post)
+    public function destroy(mahasiswa_nim $mahasiswa_nim)
     {
-        $post->delete();
-        return new PostResource(true, 'Data Post Berhasil Dihapus', null);
+        $posmahasiswa_nimt->delete();
+        return new MahasiswaSource(true, 'Data Post Berhasil Dihapus', null);
     }
 }
+
+
